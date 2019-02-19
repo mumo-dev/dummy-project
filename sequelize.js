@@ -14,16 +14,18 @@ const PasswordResetModel = require('./models/passwordreset');
 
 const config = require('./config/database');
 
-const sequelize = new Sequelize(config.database,config.connection.user, config.connection.password,{
-    host:config.connection.host,
-    dialect:'mysql',
-    pool: {
-        max: 10,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    }
-});
+// const sequelize = new Sequelize(config.database,config.connection.user, config.connection.password,{
+//     host:config.connection.host,
+//     dialect:'postgres',
+//     pool: {
+//         max: 10,
+//         min: 0,
+//         acquire: 30000,
+//         idle: 10000
+//     }
+// });
+
+const sequelize = new Sequelize(process.env.DATABASE_URL);
 
 const Admin = AdminModel(sequelize,Sequelize);
 const User = UserModel(sequelize,Sequelize);
