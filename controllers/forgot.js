@@ -41,16 +41,16 @@ module.exports = {
                     email: email
                 }).then(resets => {
                     //send email
-                    /*
+                    
                     var smtpTransport = nodemailer.createTransport('SMTP', {
-                        service: 'SendGrid',
+                        service: 'gmail',
                         auth: {
-                            user: '!!! YOUR SENDGRID USERNAME !!!',
-                            pass: '!!! YOUR SENDGRID PASSWORD !!!'
+                            user: 'samumo.dev@gmail.com',
+                            pass: '33369324'
                         }
                     });
                     var mailOptions = {
-                        to: user.email,
+                        to: email,
                         from: 'passwordreset@demo.com',
                         subject: 'Node.js Password Reset',
                         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
@@ -62,7 +62,7 @@ module.exports = {
                         req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
 
                     });
-                    */
+                    
 
                     return res.json({
                         message: 'Password reset link has been send to your email with further instructions'
@@ -206,17 +206,17 @@ module.exports = {
                     email: email
                 }).then(resets => {
                     //send email
-                    /*
+              
                     var smtpTransport = nodemailer.createTransport('SMTP', {
-                        service: 'SendGrid',
+                        service: 'gmail',
                         auth: {
-                            user: '!!! YOUR SENDGRID USERNAME !!!',
-                            pass: '!!! YOUR SENDGRID PASSWORD !!!'
+                            user: 'samumo.dev@gmail.com',
+                            pass: '33369324'
                         }
                     });
                     const resetUrl = 'http://' + req.headers.host + '/reset/' + token +'?id=2';
                     var mailOptions = {
-                        to: user.email,
+                        to: email,
                         from: 'passwordreset@demo.com',
                         subject: 'Node.js Password Reset',
                         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
@@ -225,10 +225,14 @@ module.exports = {
                             'If you did not request this, please ignore this email and your password will remain unchanged.\n'
                     };
                     smtpTransport.sendMail(mailOptions, function(err) {
-                        req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-
+                        // req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+                        if(err){
+                            return res.status(500).json({
+                                message: 'Failed to send email.'
+                            })   
+                        }
                     });
-                    */
+               
 
                     return res.status(200).json({
                         message: 'Password reset link has been send to your email with further instructions'
