@@ -1,0 +1,231 @@
+{{> sidebar }}
+<div id="content-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">Restaurants</a>
+            </li>
+            <li class="breadcrumb-item active">Delivery Locations</li>
+        </ol>
+
+        <!--<div class="row">-->
+        <!--<div class="col-sm-4">-->
+        <!-- form for adding new town-->
+        {{#if success }}
+            <div class="alert alert-success">
+                <p> {{{ success }}}</p>
+            </div>
+        {{/if}}
+
+        {{#if error }}
+            <div class="alert alert-danger">
+                <p> {{{ error }}}</p>
+            </div>
+        {{/if}}
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title"> Add Delivery Locations</div>
+            </div>
+            <div class="card-body">
+                <form action="/addDeliveryLocations" method="post">
+                    <div class="row">
+                        <input type="hidden" value="{{{id}}}" name="resId">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>select town</label>
+                                <select class="form-control" required name="townId" id="townChooser">
+                                    <option value="">Choose</option>
+                                    {{# each towns}}
+                                        <option value="{{{this.id}}}">{{{ this.name }}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>select area</label>
+                                <select class="form-control" required name="areaId" id="areaChooser">
+
+                                </select>
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Delivery Time</label>
+                                <input class="form-control" type="text" placeholder="eg 10-20 mins" required
+                                       name="time">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Delivery Fee</label>
+
+                                <input class="form-control" type="number" placeholder="100" required name="fee">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+
+                            <div class="form-group">
+                                <label class="mt-3"></label>
+                                <button class="btn btn-primary btn-block" type="submit">Add</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <hr>
+        <h2 class="text-center">Delivery Locations</h2>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Town</th>
+                        <th>Area</th>
+                        <th>Delivery Fee</th>
+                        <th>Delivery Time</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each locations}}
+                        <tr>
+                            <td> {{{this.town.name }}}</td>
+                            <td> {{{this.area.name }}}</td>
+                            <td> {{{this.fees }}}</td>
+                            <td> {{{this.time }}}</td>
+                            <td>
+                                <button class="btn btn-outline-success" data-toggle="modal" data-target="#updateDelLoc"
+                                        onclick="updateDeliveryLoc('{{{this.restaurantId}}}',
+                                                '{{{this.areaId}}}',
+                                                '{{{this.town.name }}}',
+                                                '{{{this.area.name }}}',
+                                                '{{{this.time }}}',
+                                                '{{{this.fees}}}')">
+                                    Update
+                                </button>
+                            </td>
+                            <td>
+                                <form method="post" action="/deleteDelivery" class="d-inline">
+
+                                    <input type="hidden" value="{{{ this.restaurantId }}}" name="restId">
+                                    <input type="hidden" value="{{{ this.areaId}}}" name="areaId">
+                                    <button type="submit" class="btn btn-outline-danger float-right">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateDelLoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form action="/updateDeliveryLocations" method="post">
+
+                    <input type="hidden" value="{{{id}}}" name="resId">
+                    <input type="hidden"  name="delAreaId" id="delAreaId">
+
+
+                    <div class="form-group">
+                        <label>Town</label>
+                        <input type="text" class="form-control" id="delTown" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Area</label>
+                        <input type="text" class="form-control" id="delArea" disabled>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Delivery Time</label>
+                        <input class="form-control" type="text" required name="delTime" id="delTime">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Delivery Fee</label>
+                        <input class="form-control" type="number" required name="delFee" id="delFee">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="mt-3"></label>
+                        <button class="btn btn-primary btn-block" type="submit">Update</button>
+                    </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+</div>
+
+<script>
+
+    // $('#townChooser').on('change', function () {
+    //     var id = $(this).val();
+    //     alert('Selected '+ id);
+    // });
+    var chooser = document.querySelector('#townChooser');
+    var areaChooser = document.querySelector('#areaChooser');
+    chooser.addEventListener('change', function () {
+        var id = this.value;
+        if (id !== "")
+            axios.get('/api/towns/areas/'+id).then(data => {
+                // console.log(data)
+                const areas = data.data;
+                let html = "";
+                areas.forEach(function (item) {
+                    var shrml = `<option value="${item.id}"> ${item.name}</option>`;
+                    html += shrml
+
+                });
+                areaChooser.innerHTML = html;
+            })
+    });
+
+    function updateDeliveryLoc(resId, areaId, townName, areaName, time, fee) {
+        $('#delArea').val(areaName);
+        $('#delTown').val(townName);
+        $('#delFee').val(fee);
+        $('#delTime').val(time);
+        $('#delAreaId').val(areaId);
+    }
+
+</script>

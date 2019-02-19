@@ -1,0 +1,143 @@
+{{> sidebar }}
+<div id="content-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Admin</a>
+            </li>
+            <li class="breadcrumb-item"><a href="/locations">Locations</a></li>
+            <li class="breadcrumb-item active">{{{ town.name }}}</li>
+        </ol>
+
+        {{#if success }}
+            <div class="alert alert-success">
+                {{{ success }}}
+            </div>
+        {{/if}}
+
+        {{#if error }}
+            <div class="alert alert-danger">
+                {{{ error }}}
+            </div>
+        {{/if}}
+        <div class="card ">
+            <div class="card-header">Add new delivery area</div>
+            <div class="card-body">
+
+                {{#if message }}
+                    <div class="alert alert-danger">
+                        {{{ message }}}
+                    </div>
+                {{/if}}
+
+                <form action="/addArea" method="post">
+                    <div class="row">
+
+                        <input type="hidden" value="{{{ town.id}}}" name="townId">
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="name"
+                                   placeholder="Name of the area" required="required" autofocus="autofocus">
+                        </div>
+
+                        <div class="col-sm-4">
+                            <button type="submit" class="btn btn-primary btn-block">ADD</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+        <!---->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each town.areas}}
+                        <tr>
+                            <td>{{{this.name}}}</td>
+
+                            <td>
+                                <button data-toggle="modal" data-target="#updateArea" class="btn btn-outline-success"
+                                        onclick="updateArea('{{{this.id}}}', '{{{this.name}}}')">
+                                    Update
+                                </button>
+                            </td>
+
+                            <td>
+                                <form method="post" action="/deleteArea" class="d-inline">
+                                    <input type="hidden" value="{{{ this.townId}}}" name="townId">
+                                    <input type="hidden" value="{{{ this.id}}}" name="id">
+
+                                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!--modal-->
+<div class="modal fade" id="updateArea" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form action="/updateArea" method="post">
+
+                    <input type="hidden" name="areaId" id="areaId">
+                    <input type="hidden" name="townId" value="{{{ town.id}}}">
+                    <div class="form-group">
+                        <input type="text" id="areaName" class="form-control" name="areaName"
+                               placeholder="Name of the area" required="required" autofocus="autofocus">
+                    </div>
+
+
+
+                    <div class="col-sm-4">
+                        <button type="submit" class="btn btn-primary btn-block">Update</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateArea(id, name) {
+
+        $('#areaId').val(id);
+        $('#areaName').val(name);
+
+    }
+</script>

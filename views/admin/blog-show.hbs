@@ -1,0 +1,44 @@
+{{> sidebar }}
+<div id="content-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/blog">Blog </a></li>
+            <li class="breadcrumb-item  active"> Details</li>
+
+
+        </ol>
+
+        <!-- add a menu-->
+        {{#if success }}
+            <div class="alert alert-success">
+                {{{ success }}}
+            </div>
+        {{/if}}
+
+        {{#if error }}
+            <div class="alert alert-danger">
+                {{{ error }}}
+            </div>
+        {{/if}}
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title text-info text-uppercase">{{{blog.title}}}
+                    <span class="float-right"><a class="btn btn-danger" href="/blog/delete/{{{blog.id}}}">DELETE</a> </span>
+                    <span class="float-right mr-2"><a class="btn btn-primary" href="/blog/edit/{{{blog.id}}}">UPDATE</a> </span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="text-info">Posted on: {{{blog.createdAt}}}</p>
+                <div class="card-text"> {{{blog.description}}}</div>
+            </div>
+        </div>
+    </div>
+</div>

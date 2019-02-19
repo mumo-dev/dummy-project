@@ -1,0 +1,169 @@
+{{> sidebar }}
+<div id="content-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="">Admin</a>
+            </li>
+            <li class="breadcrumb-item ">Menus</li>
+            <li class="breadcrumb-item active">{{{ restaurant.name }}}</li>
+        </ol>
+
+        <!-- add a menu-->
+        {{#if success }}
+            <div class="alert alert-success">
+                {{{ success }}}
+            </div>
+        {{/if}}
+
+        {{#if error }}
+            <div class="alert alert-danger">
+                {{{ error }}}
+            </div>
+        {{/if}}
+
+        <div class="card w-75">
+            <div class="card-header">Add New Menu</div>
+            <div class="card-body">
+
+
+                <form action="/addMenu" method="post">
+                    <div class="row">
+                        <input type="hidden" name="restaurantId" value="{{{restaurant.id}}}">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="menuName" placeholder="Name of menu" required>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <input type="number" class="form-control" name="menuPrice" placeholder="Price " required>
+                        </div>
+
+
+                        <div class="col-sm-12 mt-3">
+                            <textarea class="form-control" name="menuDescription"
+                                      placeholder="Description of the dish" required></textarea>
+
+                        </div>
+
+                        <div class="col-sm-6 mt-3">
+                            <button type="submit" class="btn btn-primary btn-block">Add</button>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!--menus-->
+        <hr>
+
+
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>price</th>
+                            <th>Description</th>
+                            <th>Update</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each restaurant.menus}}
+                            <tr>
+                                <td> {{{this.name }}}</td>
+                                <td> {{{this.price }}}</td>
+                                <td> {{{this.description }}}</td>
+                                <td>
+                                    <button class="btn btn-outline-success" data-toggle="modal" data-target="#updateMenu"
+                                            onclick="updateMenu('{{{this.id}}}', '{{{this.name}}}', '{{{this.price}}}',
+                                                    '{{{this.description}}}')">
+                                        Update
+                                    </button>
+                                </td>
+                                <td>
+                                    <form method="post" action="/deleteMenu" class="d-inline">
+
+                                        <input type="hidden" value="{{{ this.id}}}" name="id">
+                                        <input type="hidden" value="{{{ this.restaurantId}}}" name="restaurantId">
+                                        <button type="submit" class="btn btn-outline-danger float-right">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+
+    </div>
+</div>
+
+<!--modal-->
+<div class="modal fade" id="updateMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form action="/updateMenu" method="post">
+
+                    <input type="hidden" name="restaurantId" value="{{{restaurant.id}}}">
+                    <input type="hidden" name="menuId" id="uMenuId">
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="uMenuName" name="menuName"
+                               placeholder="Name of menu" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="uMenuPrice" name="menuPrice" placeholder="Price "
+                               required>
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+                            <textarea class="form-control" name="menuDescription"
+                                      placeholder="Description of the dish" id="uMenuDes" required></textarea>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-success   btn-block">UPDATE</button>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateMenu(id, name, price, description) {
+        $('#uMenuId').val(id);
+        $('#uMenuName').val(name);
+        $('#uMenuPrice').val(price);
+        $('#uMenuDes').val(description);
+
+    }
+</script>
+
+

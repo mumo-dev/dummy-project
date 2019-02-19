@@ -1,0 +1,115 @@
+{{> sidebar }}
+<div id="content-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Admin</a>
+            </li>
+            <li class="breadcrumb-item active">Towns/Cities</li>
+        </ol>
+
+        <!--<div class="row">-->
+        <!--<div class="col-sm-4">-->
+        <!-- form for adding new town-->
+        {{#if success }}
+        <div class="alert alert-success">
+            <p> {{{ success }}}</p>
+        </div>
+        {{/if}}
+
+        {{#if error }}
+        <div class="alert alert-danger">
+            <p> {{{ error }}}</p>
+        </div>
+        {{/if}}
+        <div class="w-75">
+            <form action="/addTown" method="post">
+                <div class="form-row mb-3">
+                    <div class="col-8">
+                        <input type="text" class="form-control" name="town" placeholder="Name of the town" required>
+                    </div>
+                    <div class="col-4">
+                        <input type="submit" class="btn btn-primary" value="ADD TOWN">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card w-75">
+            <div class="card-header text-primary text-uppercase">
+                Towns
+            </div>
+            <ul class="list-group list-group-flush">
+
+                {{#each towns}}
+                <!--<p>{{@index}}. {{this}}</p>-->
+                <li class="list-group-item" style="cursor: pointer;">
+
+                    <a href='/locations/{{{this.id}}}'>{{{ this.name }}}</a>
+
+                    <span class="float-right">
+                            <a href="/locations/{{{this.id}}}" class="btn btn-outline-primary">view areas</a>
+                            <button data-toggle="modal" data-target="#updateTown" class="btn btn-outline-success"
+                                    onclick="updateTown('{{{this.id}}}', '{{{this.name}}}')">Update</button>
+                                <form method="post" action="/deleteTown" class="d-inline">
+                                    <input type="hidden" value="{{{ this.id}}}" name="id">
+                                      <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                </form>
+
+                            </span>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="updateTown" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form action="/updateTown" method="post">
+                    <div class="form-row">
+                        <input type="hidden" id="townId" name="townId">
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="townName" name="townName" required>
+                        </div>
+                        <div class="col-4">
+                            <input type="submit" class="btn btn-primary" value="UPDATE">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--<div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>-->
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    function updateTown(id, name) {
+        $('#townId').val(id);
+        $('#townName').val(name);
+    }
+
+
+</script>

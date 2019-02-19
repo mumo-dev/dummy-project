@@ -1,0 +1,188 @@
+{{> sidebar }}
+<div id="content-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="">Admin</a>
+            </li>
+            <li class="breadcrumb-item  active">Recipe Books</li>
+
+
+        </ol>
+
+        <!-- add a menu-->
+        {{#if success }}
+            <div class="alert alert-success">
+                {{{ success }}}
+            </div>
+        {{/if}}
+
+        {{#if error }}
+            <div class="alert alert-danger">
+                {{{ error }}}
+            </div>
+        {{/if}}
+
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <div class="card-title"><h3 class="d-inline-block">All Recipe Books</h3>
+                    <span class="float-right">
+                        <button class="btn btn-primary" data-toggle="modal"
+                                data-target="#addbook">Add a new Book</button> </span>
+                </div>
+            </div>
+            <div class="card-body">
+
+                {{#each books}}
+
+                    <div class="card mb-2">
+                        <div class="card-header bg-transparent">
+                            <div class="card-title mb-0" >
+                                <span class="text-uppercase" style="font-weight: 500"> {{{this.title}}}</span>
+                                <span class="float-right text-info"> uploaded on : {{{ this.updatedAt }}}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="card-text">
+                               {{{ this.description }}}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            Download url : <a href="/files/books/{{{this.downloadUrl}}}">Link</a>
+                            <span class="float-right">
+                        <button data-toggle="modal" data-target="#updateBook"
+                                class="btn btn-outline-success"
+                                onclick="updateBook('{{{this.id}}}', '{{{this.title}}}',
+                                        '{{{this.description}}}', '{{{this.downloadUrl}}}')">
+                                        Update
+                                    </button>
+
+                                    <form method="post" action="/deleteBook" class="d-inline">
+
+                                        <input type="hidden" value="{{{ this.id}}}" name="bookId">
+
+                                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                    </form>
+
+                        </span>
+                        </div>
+                    </div>
+
+                {{/each}}
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--modal add book-->
+<div class="modal fade" id="addbook" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ADD A NEW BOOK </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form action="/books" method="post" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label> Book Title</label>
+                        <input type="text" class="form-control" name="bookTitle"
+                               required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <label> Book Description</label>
+                        <textarea class="form-control" name="bookDescription"
+                                  required="required">
+                        </textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Book File</label>
+                        <input type="file" class="form-control-file" name="bookUrl" accept="application/pdf"
+                               required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">ADD</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- update book modal-->
+<div class="modal fade" id="updateBook" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ADD A NEW BOOK </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form action="/updateBooks" method="post" enctype="multipart/form-data">
+
+                    <input type="hidden" id="bId" name="id">
+                    <input type="hidden" name="resImageUrl" id="uresImageUrl">
+                    <div class="form-group">
+                        <label> Book Title</label>
+                        <input type="text" class="form-control" name="title" id="bTitle"
+                               required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <label> Book Description</label>
+                        <textarea class="form-control" name="description" id="bDescription"
+                                  required="required">
+                        </textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Book File (Don't choose any file if update not
+                            required)</label>
+                        <input type="file" class="form-control-file" name="bookUrl" accept="application/pdf">
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Update</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function updateBook(id, title, description, downloadUrl) {
+        $('#bId').val(id);
+        $('#bTitle').val(title);
+        $('#bDescription').val(description);
+        $('#uresImageUrl').val(downloadUrl);
+    }
+</script>

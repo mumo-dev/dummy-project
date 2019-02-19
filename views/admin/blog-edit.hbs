@@ -1,0 +1,56 @@
+{{> sidebar }}
+<div id="content-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/blog">Blog</a>
+            </li>
+            <li class="breadcrumb-item  active"> Edit</li>
+
+
+        </ol>
+
+        <!-- add a menu-->
+        {{#if success }}
+            <div class="alert alert-success">
+                {{{ success }}}
+            </div>
+        {{/if}}
+
+        {{#if error }}
+            <div class="alert alert-danger">
+                {{{ error }}}
+            </div>
+        {{/if}}
+
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <div class="card-title">Edit Post
+                </div>
+            </div>
+            <div class="card-body">
+                <form action="/blog/update" method="post">
+                    <input type="hidden" value="{{{blog.id}}}" name="id">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" value="{{{blog.title}}}"  required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="tdescription" name="description" rows="8">{{{blog.description}}}</textarea>
+                    </div>
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-success">UPDATE</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
