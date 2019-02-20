@@ -161,29 +161,33 @@ module.exports = {
 
         Order.update(values, selector)
             .then(() => {
-
-                let pushNotifications = new PushNotifications({
-                    instanceId: 'f00f783a-c8e8-415b-89d7-83f906a2b258',
-                    secretKey: '3E931B71E19577771396295A186F0687D0E270FC1A6954CFCD4ECA06349EAC89'
-                });
-
-                const notificationMsg = 'Your Order #' + order.id + ' has been ' + order.status;
-                const channel = 'orderstatus' + order.userId;
-                pushNotifications.publish(
-                    [channel],
-                    {
-                        fcm: {
-                            notification: {
-                                title: 'Order Status',
-                                body: notificationMsg
+                Order.findById(req.body.orderId)
+                .then(order=>{
+                    let pushNotifications = new PushNotifications({
+                        instanceId: 'f00f783a-c8e8-415b-89d7-83f906a2b258',
+                        secretKey: '3E931B71E19577771396295A186F0687D0E270FC1A6954CFCD4ECA06349EAC89'
+                    });
+    
+                    const notificationMsg = 'Your Order #' + order.id + ' has been ' + order.status;
+                    const channel = 'orderstatus' + order.userId;
+                    pushNotifications.publish(
+                        [channel],
+                        {
+                            fcm: {
+                                notification: {
+                                    title: 'Order Status',
+                                    body: notificationMsg
+                                }
                             }
-                        }
+    
+                        }).then((publishResponse) => {
+                        console.log('Just published:', publishResponse.publishId);
+                    }).catch((error) => {
+                        console.log('Error:', error);
+                    });
+                })
 
-                    }).then((publishResponse) => {
-                    console.log('Just published:', publishResponse.publishId);
-                }).catch((error) => {
-                    console.log('Error:', error);
-                });
+                
 
 
                 /*req.io.emit('orderstatus' + order.userId,
