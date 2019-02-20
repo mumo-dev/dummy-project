@@ -230,6 +230,7 @@ module.exports = {
                     smtpTransport.sendMail(mailOptions, function(err) {
                         // req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
                         if(err){
+                            console.log(err);
                             return res.status(500).json({
                                 message: 'Failed to send email.'
                             })   
