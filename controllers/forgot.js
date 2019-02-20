@@ -43,7 +43,7 @@ module.exports = {
                 }).then(resets => {
                     //send email
                     
-                    var smtpTransport = nodemailer.createTransport('SMTP', {
+                    var smtpTransport = nodemailer.createTransport({
                         service: 'gmail',
                         auth: {
                             user: 'samumo.dev@gmail.com',
@@ -211,7 +211,7 @@ module.exports = {
                 }).then(resets => {
                     //send email
               
-                    var smtpTransport = nodemailer.createTransport('SMTP', {
+                    var smtpTransport = nodemailer.createTransport({
                         service: 'gmail',
                         auth: {
                             user: 'samumo.dev@gmail.com',
