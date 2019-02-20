@@ -44,13 +44,13 @@ module.exports = {
             var smtpTransport = nodemailer.createTransport({
               service: "gmail",
               auth: {
-                user: "samumo.dev@gmail.com",
-                pass: "33369324"
+                user: "samuel.mumo.745@gmail.com",
+                pass: "$@muel-rocks"
               }
             });
             var mailOptions = {
               to: email,
-              from: "samumo.dev@gmail.com",
+              from: "samuel.mumo.745@gmail.com",
               subject: "Password Reset",
               text:
                 "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
@@ -233,15 +233,15 @@ module.exports = {
             var smtpTransport = nodemailer.createTransport({
               service: "gmail",
               auth: {
-                user: "samumo.dev@gmail.com",
-                pass: "33369324"
+                user: "samuel.mumo.745@gmail.com",
+                pass: "$@muel-rocks"
               }
             });
             const resetUrl =
               "https://" + req.headers.host + "/reset/" + token + "?id=2";
             var mailOptions = {
               to: email,
-              from: "samumo.dev@gmail.com",
+              from: "samuel.mumo.745@gmail.com",
               subject: "Password Reset",
               text:
                 "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
