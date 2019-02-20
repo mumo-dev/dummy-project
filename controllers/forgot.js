@@ -4,6 +4,7 @@ const PasswordResets = require('../sequelize').PasswordReset;
 
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 module.exports = {
 
