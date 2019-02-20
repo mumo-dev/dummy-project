@@ -39,11 +39,12 @@ var blogController = require('../controllers/blog');
 var forgetController = require('../controllers/forgot');
 var bookController = require('../controllers/book');
 var Order = require('../sequelize').Order;
+var User = require('../sequelize').User;
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('index', {title: 'Express'});
+    res.render('index', {title: 'Home'});
 });
 
 router.get('/login', (function (req, res) {
@@ -93,41 +94,41 @@ router.post('/updateTown', isLoggedIn, adminController.updateTown);
 router.post('/deleteTown', isLoggedIn, adminController.deleteTown);
 
 router.get('/locations/:id', isLoggedIn, adminController.getLocationEstatesById);
-router.post('/addArea', adminController.addArea);
-router.post('/updateArea', adminController.updateArea);
-router.post('/deleteArea', adminController.deleteArea);
+router.post('/addArea',isLoggedIn, adminController.addArea);
+router.post('/updateArea', isLoggedIn,adminController.updateArea);
+router.post('/deleteArea', isLoggedIn,adminController.deleteArea);
 
-router.get('/restaurants', restaurantController.index);
-router.get('/restaurants/:id', restaurantController.displayMenu);
-router.post('/addRestaurant', upload.single('resImage'), restaurantController.add);
+router.get('/restaurants',isLoggedIn, restaurantController.index);
+router.get('/restaurants/:id', isLoggedIn,restaurantController.displayMenu);
+router.post('/addRestaurant',isLoggedIn, upload.single('resImage'), restaurantController.add);
 //TODO not updating image
-router.post('/updateRestaurant', upload.single('resImage'), restaurantController.update);
-router.post('/deleteRestaurant', restaurantController.delete);
+router.post('/updateRestaurant',isLoggedIn, upload.single('resImage'), restaurantController.update);
+router.post('/deleteRestaurant',isLoggedIn, restaurantController.delete);
 
-router.post('/addMenu', restaurantController.addMenu);
-router.post('/updateMenu', restaurantController.updateMenu);
-router.post('/deleteMenu', restaurantController.deleteMenu);
-router.get('/delivery-locations/:id', restaurantController.getDeliveryLocations);
-router.post('/addDeliveryLocations', restaurantController.addDeliveryLocations);
-router.post('/updateDeliveryLocations/', restaurantController.updateDeliveryLocations);
-router.post('/deleteDelivery', restaurantController.deleteDeliveryLocation);
+router.post('/addMenu', isLoggedIn,restaurantController.addMenu);
+router.post('/updateMenu',isLoggedIn, restaurantController.updateMenu);
+router.post('/deleteMenu', isLoggedIn,restaurantController.deleteMenu);
+router.get('/delivery-locations/:id',isLoggedIn, restaurantController.getDeliveryLocations);
+router.post('/addDeliveryLocations', isLoggedIn, restaurantController.addDeliveryLocations);
+router.post('/updateDeliveryLocations/',isLoggedIn, restaurantController.updateDeliveryLocations);
+router.post('/deleteDelivery', isLoggedIn,restaurantController.deleteDeliveryLocation);
 
-router.get('/orders', ordersController.index);
-router.get('/orders/:id', ordersController.findOrderUsingIndex);
-router.post('/updateOrderStatus', ordersController.updateOrderStatus);
+router.get('/orders', isLoggedIn, ordersController.index);
+router.get('/orders/:id', isLoggedIn, ordersController.findOrderUsingIndex);
+router.post('/updateOrderStatus',isLoggedIn, ordersController.updateOrderStatus);
 
-router.get('/blog', blogController.index);
-router.get('/blog/:id', blogController.showBlogItem);
-router.get('/blog/edit/:id', blogController.edit);
-router.get('/blog/delete/:id', blogController.delete);
-router.get('/blog/create', blogController.showCreateView);
-router.post('/blog', blogController.create);
-router.post('/blog/update', blogController.update);
+router.get('/blog', isLoggedIn, blogController.index);
+router.get('/blog/:id', isLoggedIn, blogController.showBlogItem);
+router.get('/blog/edit/:id', isLoggedIn, blogController.edit);
+router.get('/blog/delete/:id', isLoggedIn, blogController.delete);
+router.get('/blog/create', isLoggedIn, blogController.showCreateView);
+router.post('/blog', isLoggedIn, blogController.create);
+router.post('/blog/update', isLoggedIn, blogController.update);
 
-router.get('/books', bookController.index);
-router.post('/books', upload.single('bookUrl'), bookController.create);
-router.post('/deleteBook', bookController.delete);
-router.post('/updateBooks', upload.single('bookUrl'), bookController.update);
+router.get('/books', isLoggedIn, bookController.index);
+router.post('/books', isLoggedIn, upload.single('bookUrl'), bookController.create);
+router.post('/deleteBook', isLoggedIn, bookController.delete);
+router.post('/updateBooks',isLoggedIn, upload.single('bookUrl'), bookController.update);
 
 
 router.get('/logout', function (req, res) {
@@ -158,6 +159,30 @@ router.get('/orders-for-today', (req, res)=>{
         })
     });
 });
+
+router.get('/orders-this-week', (req, res)=>{
+    Order.findAll({
+        where: {
+            createdAt: {
+                [Op.gt]:new Date() - 24 * 7 * 60 * 60 * 1000
+            }
+        }
+    }).then(orders=>{
+        return res.status(200).json({
+            count: orders.length
+        })
+    });
+});
+
+router.get('/total-active-customers', (req, res)=>{
+    User.findAll().then((result) => {
+        return res.status(200).json({
+            count:result.length
+        })
+    }).catch((err) => {
+        
+    });
+})
 
 
 // route middleware to make sure

@@ -25,93 +25,112 @@
 
 
     <script defer src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script>tinymce.init({selector: '#tdescription'});</script>
+    <script>tinymce.init({ selector: '#tdescription' });</script>
 
 </head>
 
 <body id="page-top">
 
-<!-- nav-->
+    <!-- nav-->
 
-{{#if header}}
-{{else}}
+    {{#if header}}
+    {{else}}
     {{>header }}
-{{/if}}
+    {{/if}}
 
 
-<!-- /#wrapper -->
-<div id="wrapper">
-    <!-- side navigation-->
-    <!-- body-->
-    {{{ body }}}
-</div>
+    <!-- /#wrapper -->
+    <div id="wrapper">
+        <!-- side navigation-->
+        <!-- body-->
+        {{{ body }}}
+    </div>
 
 
-<!-- Scroll to Top Button-->
+    <!-- Scroll to Top Button-->
 
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-
-
-<!-- Bootstrap core JavaScript-->
-<script src="/vendor/jquery/jquery.min.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Page level plugin JavaScript-->
-<script src="/vendor/chart.js/Chart.min.js"></script>
-<script src="/vendor/datatables/jquery.dataTables.js"></script>
-<script src="/vendor/datatables/dataTables.bootstrap4.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="/js/sb-admin.min.js"></script>
-
-<!-- Demo scripts for this page-->
-<script src="/js/demo/datatables-demo.js"></script>
-<script src="/js/demo/chart-area-demo.js"></script>
-<script src="/js/axios.js"></script>
-<script src="/js/socket.io.slim.js"></script>
-<script>
-    $('#dataTable').dataTable({
-        "order": [],
-        // Your other options here...
-    });
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
 
-    var socket = io();
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    var orders = 0;
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    axios.get('/orders-count').then(res=>{
-        orders = res.data.count;
-        if (!orders) {
-            $('#neworders').hide();
-        }else {
-            $('#neworders').text(orders +" NEW");
-            $('#new-orders').text(orders +" New Orders!");
-            $('#neworders').show();
-        }
-    });
+    <!-- Page level plugin JavaScript-->
+    <script src="/vendor/chart.js/Chart.min.js"></script>
+    <script src="/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.js"></script>
 
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin.min.js"></script>
 
-
-    socket.on('neworder', function (nOforders) {
-        orders += 1;
-        $('#neworders').text(orders + "NEW");
-        $('#new-orders').text(orders +" New Orders!");
-        if (!orders) {
-            $('#neworders').hide();
-        } else {
-            $('#neworders').show();
-        }
-    });
+    <!-- Demo scripts for this page-->
+    <script src="/js/demo/datatables-demo.js"></script>
+    <script src="/js/demo/chart-area-demo.js"></script>
+    <script src="/js/axios.js"></script>
+    <script src="/js/socket.io.slim.js"></script>
+    <script>
+        $('#dataTable').dataTable({
+            "order": [],
+            // Your other options here...
+        });
 
 
-</script>
+        var socket = io();
+
+        var orders = 0;
+
+        axios.get('/orders-count').then(res => {
+            orders = res.data.count;
+            $('#new-orders').text(orders + " New Orders!");
+            if (!orders) {
+                $('#neworders').hide();
+            } else {
+                $('#neworders').text(orders + " NEW");
+
+                $('#neworders').show();
+            }
+        });
+
+        axios.get('/orders-for-today').then(res => {
+            const orders_toay = res.data.count;
+            $('#todays_orders').text(orders_toay + " Orders Made Today!");
+        });
+
+        axios.get('/orders-this-week').then(res => {
+            const orders_week = res.data.count;
+            $('#week-orders').text(orders_week + " Orders Made Week!");
+        });
+
+        axios.get('/total-active-customers').then(res => {
+            const cust = res.data.count;
+           $('#allcustomers').text(cust + " Active Customers");
+        });
+
+
+
+        socket.on('neworder', function (nOforders) {
+            orders += 1;
+            $('#neworders').text(orders + "NEW");
+            $('#new-orders').text(orders + " New Orders!");
+            if (!orders) {
+                $('#neworders').hide();
+            } else {
+                $('#neworders').show();
+            }
+        });
+
+
+
+        
+
+
+    </script>
 </body>
 
 </html>
-
