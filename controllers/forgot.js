@@ -59,8 +59,11 @@ module.exports = {
                             'If you did not request this, please ignore this email and your password will remain unchanged.\n'
                     };
                     smtpTransport.sendMail(mailOptions, function(err) {
-                        req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-
+                        if(err) {
+                            res.status(500).json({
+                                message: 'Sending of email failed'
+                            })
+                        }
                     });
                     
 
