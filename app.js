@@ -24,11 +24,43 @@ var app = express();
 var io=  socket_io();
 app.io = io;
 
+let utils = {};
+
+utils.getHandleBarsHelpers = function () {
+    var helpers = {};
+    helpers.xif = function (v1, operator, v2, options) {
+        switch (operator) {
+            case '==':
+                return (v1 == v2) ? options.fn(this) : options.inverse(this);
+            case '===':
+                return (v1 === v2) ? options.fn(this) : options.inverse(this);
+            case '!==':
+                return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+            case '!=':
+                return (v1 != v2) ? options.fn(this) : options.inverse(this);
+            case '<':
+                return (v1 < v2) ? options.fn(this) : options.inverse(this);
+            case '<=':
+                return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+            case '>':
+                return (v1 > v2) ? options.fn(this) : options.inverse(this);
+            case '>=':
+                return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+            case '&&':
+                return (v1 && v2) ? options.fn(this) : options.inverse(this);
+            case '||':
+                return (v1 || v2) ? options.fn(this) : options.inverse(this);
+            default:
+                return options.inverse(this);
+        }
+    };
+    return helpers;
+};
 
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
-app.engine('.hbs',expressHbs({defaultLayout: 'layout',extname:'.hbs'}));
+app.engine('.hbs',expressHbs({defaultLayout: 'layout',extname:'.hbs', helpers: utils.getHandleBarsHelpers()}));
 app.set('view engine', '.hbs');
 
 
