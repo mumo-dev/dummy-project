@@ -118,10 +118,11 @@ router.get('/orders/:id', isLoggedIn, ordersController.findOrderUsingIndex);
 router.post('/updateOrderStatus',isLoggedIn, ordersController.updateOrderStatus);
 
 router.get('/blog', isLoggedIn, blogController.index);
+router.get('/blog/create', isLoggedIn, blogController.showCreateView);
 router.get('/blog/:id', isLoggedIn, blogController.showBlogItem);
 router.get('/blog/edit/:id', isLoggedIn, blogController.edit);
 router.get('/blog/delete/:id', isLoggedIn, blogController.delete);
-router.get('/blog/create', isLoggedIn, blogController.showCreateView);
+
 router.post('/blog', isLoggedIn, blogController.create);
 router.post('/blog/update', isLoggedIn, blogController.update);
 
