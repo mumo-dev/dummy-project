@@ -7,7 +7,8 @@ module.exports = function (sequelize, DataTypes) {
         },
         status: DataTypes.STRING,
         areaId: DataTypes.INTEGER,
-        deliveryCost: DataTypes.INTEGER
+        deliveryCost: DataTypes.INTEGER,
+        deliveryTime: DataTypes.STRING
     });
 
 

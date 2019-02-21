@@ -18,7 +18,8 @@ module.exports = {
             userId: req.body.userId,
             status: 'placed',
             areaId: req.body.areaId,
-            deliveryCost: req.body.cost
+            deliveryCost: req.body.cost,
+            deliveryTime: req.body.deliveryTime
         }).then(order => {
 
             orderItems.forEach(function (item) {
@@ -78,6 +79,7 @@ module.exports = {
                 pOrder['id'] = order.id;
                 pOrder['status'] = order.status;
                 pOrder['deliveryCost'] = order.deliveryCost;
+                pOrder['deliveryTime'] = order.deliveryTime;
                 pOrder['createdAt'] = moment(order.createdAt).format('MMM Do YYYY, h:mm:ss')
                 pOrder['userId'] = order.userId;
                 pOrder['userName'] = order.user.name;
@@ -136,6 +138,7 @@ module.exports = {
             pOrder['id'] = order.id;
             pOrder['status'] = order.status;
             pOrder['deliveryCost'] = order.deliveryCost;
+            pOrder['deliveryTime'] = order.deliveryTime;
             pOrder['createdAt'] = moment(order.createdAt).format('MMM Do YYYY, h:mm:ss');
             pOrder['userId'] = order.userId;
             pOrder['userName'] =  order.user.name;
@@ -196,6 +199,7 @@ module.exports = {
                 pOrder['id'] = order.id;
                 pOrder['status'] = order.status;
                 pOrder['deliveryCost'] = order.deliveryCost;
+                pOrder['deliveryTime'] = order.deliveryTime;
                 pOrder['createdAt'] =moment(order.createdAt).format('MMM Do YYYY, h:mm:ss');
                 pOrder['userId'] = order.userId;
                 pOrder['userName'] = order.user.name;;
