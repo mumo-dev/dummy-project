@@ -108,7 +108,7 @@ module.exports = {
             pOrder['status'] = order.status;
             pOrder['deliveryCost'] = order.deliveryCost;
             pOrder['deliveryTime'] = order.deliveryTime;
-            pOrder['createdAt'] = 
+            orderItems['createdAt'] = moment(item.createdAt).format('MMM Do YYYY, h:mm:ss');
 
             pOrder['userId'] = order.userId;
             pOrder['userName'] = order.user.name;
