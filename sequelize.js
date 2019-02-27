@@ -64,7 +64,7 @@ Order.hasMany(OrderItems);
 // User.belongsTo(Area);
 
 
-sequelize.sync({force:true})
+sequelize.sync({force:false})
     .then(()=> console.log('Tables created'))
     .catch(err=> console.log(err));
 
